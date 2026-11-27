@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "ISET Connect REST API",
+    "description": "Complete API collection for the ISET Connect Android backend. After running a login request, the token is saved to the collection variable 'token'. Set baseUrl to http://10.0.2.2/iset_connect/backend/api/ (emulator) or http://localhost/iset_connect/backend/api/ (PC).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost/iset_connect/backend/api/" },
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "studentToken", "value": "" },
+    { "key": "materialId", "value": "1" },
+    { "key": "internshipId", "value": "1" },
+    { "key": "loanId", "value": "1" },
+    { "key": "applicationId", "value": "1" },
+    { "key": "studentId", "value": "2" }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login (admin)",
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["if (pm.response.code === 200) { var j = pm.response.json(); pm.collectionVariables.set('token', j.data.token); pm.collectionVariables.set('adminToken', j.data.token); }"] } }],
+          "request": { "method": "POST", "header": [], "body": { "mode": "urlencoded", "urlencoded": [ {"key":"email","value":"admin@iset.tn"}, {"key":"password","value":"Admin@ISET2026"} ] }, "url": "{{baseUrl}}auth/login.php" },
+          "response": []
+        },
+        {
+          "name": "Login (student)",
+          "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["if (pm.response.code === 200) { var j = pm.response.json(); pm.collectionVariables.set('token', j.data.token); pm.collectionVariables.set('studentToken', j.data.token); }"] } }],
+          "request": { "method": "POST", "header": [], "body": { "mode": "urlencoded", "urlencoded": [ {"key":"email","value":"sara.benali@iset.tn"}, {"key":"password","value":"Student@123"} ] }, "url": "{{baseUrl}}auth/login.php" },
+          "response": []
+        },
+        {
+          "name": "Register student",
+          "request": { "method": "POST", "header": [], "body": { "mode": "urlencoded", "urlencoded": [ {"key":"first_name","value":"Test"}, {"key":"last_name","value":"Student"}, {"key":"cin","value":"CIN9999"}, {"key":"email","value":"test.student@iset.tn"}, {"key":"password","value":"Student@123"}, {"key":"confirm_password","value":"Student@123"}, {"key":"class_name","value":"GI1"} ] }, "url": "{{baseUrl}}auth/register.php" },
+          "response": []
+        },
+        { "name": "Get profile", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": "{{baseUrl}}auth/profile.php" }, "response": [] },
+        {
+          "name": "Update profile",
+          "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"first_name","value":"Sara"}, {"key":"last_name","value":"Benali"}, {"key":"class_name","value":"GI2"}, {"key":"email","value":"sara.benali@iset.tn"} ] }, "url": "{{baseUrl}}auth/profile.php" },
+          "response": []
+        },
+        {
+          "name": "Change password",
+          "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"current_password","value":"Student@123"}, {"key":"new_password","value":"NewPass@123"}, {"key":"confirm_password","value":"NewPass@123"} ] }, "url": "{{baseUrl}}auth/change_password.php" },
+          "response": []
+        },
+        { "name": "Logout", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": "{{baseUrl}}auth/logout.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Dashboards",
+      "item": [
+        { "name": "Admin statistics", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "url": "{{baseUrl}}dashboard/admin.php" }, "response": [] },
+        { "name": "Student statistics", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{studentToken}}","type":"string"} ] }, "url": "{{baseUrl}}dashboard/student.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Students (admin)",
+      "item": [
+        { "name": "List / search students", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}students/list.php?q=&status=", "host": ["{{baseUrl}}"], "path": ["students", "list.php"], "query": [ {"key":"q","value":""}, {"key":"status","value":""} ] } }, "response": [] },
+        { "name": "Student details", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}students/details.php?id={{studentId}}", "host": ["{{baseUrl}}"], "path": ["students","details.php"], "query": [ {"key":"id","value":"{{studentId}}"} ] } }, "response": [] },
+        { "name": "Approve student", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{studentId}}"} ] }, "url": "{{baseUrl}}students/approve.php" }, "response": [] },
+        { "name": "Reject student", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{studentId}}"}, {"key":"reason","value":"Incomplete file"} ] }, "url": "{{baseUrl}}students/reject.php" }, "response": [] },
+        { "name": "Suspend student", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{studentId}}"}, {"key":"reason","value":"Policy violation"} ] }, "url": "{{baseUrl}}students/suspend.php" }, "response": [] },
+        { "name": "Reactivate student", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{studentId}}"} ] }, "url": "{{baseUrl}}students/reactivate.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Materials",
+      "item": [
+        { "name": "List materials", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}materials/list.php?q=&category=", "host": ["{{baseUrl}}"], "path": ["materials","list.php"], "query": [ {"key":"q","value":""}, {"key":"category","value":""} ] } }, "response": [] },
+        { "name": "Material details", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}materials/details.php?id={{materialId}}", "host": ["{{baseUrl}}"], "path": ["materials","details.php"], "query": [ {"key":"id","value":"{{materialId}}"} ] } }, "response": [] },
+        { "name": "Create material (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"name","value":"Laptop Dell"}, {"key":"description","value":"16 GB RAM"}, {"key":"category","value":"Computers"}, {"key":"total_quantity","value":"5"}, {"key":"image_url","value":""} ] }, "url": "{{baseUrl}}materials/create.php" }, "response": [] },
+        { "name": "Update material (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{materialId}}"}, {"key":"name","value":"Laptop Dell"}, {"key":"description","value":"32 GB RAM"}, {"key":"category","value":"Computers"}, {"key":"total_quantity","value":"6"}, {"key":"image_url","value":""} ] }, "url": "{{baseUrl}}materials/update.php" }, "response": [] },
+        { "name": "Delete material (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{materialId}}"} ] }, "url": "{{baseUrl}}materials/delete.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Loans",
+      "item": [
+        { "name": "Create loan request (student)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{studentToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"material_id","value":"{{materialId}}"}, {"key":"quantity","value":"1"}, {"key":"borrowing_date","value":"2026-11-26"}, {"key":"expected_return_date","value":"2026-12-03"} ] }, "url": "{{baseUrl}}loans/create.php" }, "response": [] },
+        { "name": "List loans", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}loans/list.php?q=&status=&scope=", "host": ["{{baseUrl}}"], "path": ["loans","list.php"], "query": [ {"key":"q","value":""}, {"key":"status","value":""}, {"key":"scope","value":""} ] } }, "response": [] },
+        { "name": "Loan details", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}loans/details.php?id={{loanId}}", "host": ["{{baseUrl}}"], "path": ["loans","details.php"], "query": [ {"key":"id","value":"{{loanId}}"} ] } }, "response": [] },
+        { "name": "Approve loan (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{loanId}}"} ] }, "url": "{{baseUrl}}loans/approve.php" }, "response": [] },
+        { "name": "Reject loan (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{loanId}}"}, {"key":"reason","value":"Stock reserved"} ] }, "url": "{{baseUrl}}loans/reject.php" }, "response": [] },
+        { "name": "Cancel loan", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{loanId}}"} ] }, "url": "{{baseUrl}}loans/cancel.php" }, "response": [] },
+        { "name": "Register return (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{loanId}}"} ] }, "url": "{{baseUrl}}loans/return.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Internships",
+      "item": [
+        { "name": "List internships", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}internships/list.php?q=&domain=&status=", "host": ["{{baseUrl}}"], "path": ["internships","list.php"], "query": [ {"key":"q","value":""}, {"key":"domain","value":""}, {"key":"status","value":""} ] } }, "response": [] },
+        { "name": "Internship details", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}internships/details.php?id={{internshipId}}", "host": ["{{baseUrl}}"], "path": ["internships","details.php"], "query": [ {"key":"id","value":"{{internshipId}}"} ] } }, "response": [] },
+        { "name": "Create internship (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"title","value":"Web Development Intern"}, {"key":"company_name","value":"Tech Solutions"}, {"key":"company_address","value":"Tunis"}, {"key":"domain","value":"Web Development"}, {"key":"description","value":"Build web applications"}, {"key":"required_skills","value":"PHP, JavaScript"}, {"key":"start_date","value":"2026-12-01"}, {"key":"end_date","value":"2027-02-28"}, {"key":"application_deadline","value":"2026-12-15"}, {"key":"total_positions","value":"2"}, {"key":"status","value":"DRAFT"} ] }, "url": "{{baseUrl}}internships/create.php" }, "response": [] },
+        { "name": "Update internship (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{internshipId}}"}, {"key":"title","value":"Web Development Intern"}, {"key":"company_name","value":"Tech Solutions"}, {"key":"company_address","value":"Tunis"}, {"key":"domain","value":"Web Development"}, {"key":"description","value":"Build web applications"}, {"key":"required_skills","value":"PHP, JavaScript"}, {"key":"start_date","value":"2026-12-01"}, {"key":"end_date","value":"2027-02-28"}, {"key":"application_deadline","value":"2026-12-15"}, {"key":"total_positions","value":"2"}, {"key":"status","value":"PUBLISHED"} ] }, "url": "{{baseUrl}}internships/update.php" }, "response": [] },
+        { "name": "Publish internship (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{internshipId}}"} ] }, "url": "{{baseUrl}}internships/publish.php" }, "response": [] },
+        { "name": "Close internship (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{internshipId}}"} ] }, "url": "{{baseUrl}}internships/close.php" }, "response": [] },
+        { "name": "Delete internship (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{internshipId}}"} ] }, "url": "{{baseUrl}}internships/delete.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Applications",
+      "item": [
+        { "name": "Apply (student)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{studentToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"internship_id","value":"{{internshipId}}"}, {"key":"motivation_message","value":"I am interested in this opportunity."} ] }, "url": "{{baseUrl}}applications/create.php" }, "response": [] },
+        { "name": "List applications", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}applications/list.php?q=&status=&internship_id=", "host": ["{{baseUrl}}"], "path": ["applications","list.php"], "query": [ {"key":"q","value":""}, {"key":"status","value":""}, {"key":"internship_id","value":""} ] } }, "response": [] },
+        { "name": "Accept application (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{applicationId}}"} ] }, "url": "{{baseUrl}}applications/accept.php" }, "response": [] },
+        { "name": "Reject application (admin)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{adminToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{applicationId}}"}, {"key":"reason","value":"Not enough experience"} ] }, "url": "{{baseUrl}}applications/reject.php" }, "response": [] },
+        { "name": "Cancel application (student)", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{studentToken}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"{{applicationId}}"} ] }, "url": "{{baseUrl}}applications/cancel.php" }, "response": [] }
+      ]
+    },
+    {
+      "name": "Notifications",
+      "item": [
+        { "name": "List notifications", "request": { "method": "GET", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "url": { "raw": "{{baseUrl}}notifications/list.php?unread_only=", "host": ["{{baseUrl}}"], "path": ["notifications","list.php"], "query": [ {"key":"unread_only","value":""} ] } }, "response": [] },
+        { "name": "Mark one read", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"id","value":"1"} ] }, "url": "{{baseUrl}}notifications/mark_read.php" }, "response": [] },
+        { "name": "Mark all read", "request": { "method": "POST", "header": [], "auth": { "type": "bearer", "bearer": [ {"key":"token","value":"{{token}}","type":"string"} ] }, "body": { "mode": "urlencoded", "urlencoded": [ {"key":"all","value":"1"} ] }, "url": "{{baseUrl}}notifications/mark_read.php" }, "response": [] }
+      ]
+    }
+  ]
+}

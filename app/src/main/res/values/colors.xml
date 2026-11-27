@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Brand palette -->
+    <color name="navy">#142B4A</color>
+    <color name="navy_light">#1E3A5F</color>
+    <color name="primary">#2563EB</color>
+    <color name="primary_dark">#1D4ED8</color>
+    <color name="primary_light">#DBEAFE</color>
+    <color name="background">#F5F7FB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="success">#16A34A</color>
+    <color name="success_light">#DCFCE7</color>
+    <color name="warning">#F59E0B</color>
+    <color name="warning_light">#FEF3C7</color>
+    <color name="danger">#DC2626</color>
+    <color name="danger_light">#FEE2E2</color>
+    <color name="text_main">#1E293B</color>
+    <color name="text_secondary">#64748B</color>
+    <color name="divider">#E2E8F0</color>
+    <color name="surface_variant">#EEF2FF</color>
+    <color name="overlay">#99000000</color>
+    <color name="transparent">#00000000</color>
+</resources>

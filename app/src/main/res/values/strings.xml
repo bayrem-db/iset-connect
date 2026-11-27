@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ISET Connect</string>
+    <string name="app_tagline">Smart University Management</string>
+    <string name="login">Sign in</string>
+    <string name="register">Create account</string>
+    <string name="email">Email address</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="cin">CIN number</string>
+    <string name="class_group">Class / Group</string>
+    <string name="logout">Sign out</string>
+    <string name="search">Search…</string>
+    <string name="retry">Retry</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+    <string name="suspend">Suspend</string>
+    <string name="reactivate">Reactivate</string>
+    <string name="accept">Accept</string>
+    <string name="return_item">Register return</string>
+    <string name="apply">Apply now</string>
+    <string name="view_details">View details</string>
+    <string name="no_results">Nothing here yet</string>
+    <string name="loading">Loading…</string>
+    <string name="error_network">Unable to reach the server. Check your connection.</string>
+    <string name="pending">PENDING</string>
+    <string name="approved">APPROVED</string>
+    <string name="rejected">REJECTED</string>
+    <string name="suspended">SUSPENDED</string>
+    <string name="returned">RETURNED</string>
+    <string name="cancelled">CANCELLED</string>
+    <string name="nav_equipment">Equipment</string>
+    <string name="nav_internships">Internships</string>
+    <string name="nav_notifications">Alerts</string>
+    <string name="nav_profile">Profile</string>
+</resources>
